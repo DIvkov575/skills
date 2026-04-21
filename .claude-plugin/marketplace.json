@@ -1,0 +1,23 @@
+{
+  "name": "skills",
+  "owner": {
+    "name": "DIvkov575",
+    "email": "divkov@umich.edu"
+  },
+  "metadata": {
+    "description": "Custom Claude Code skills by DIvkov575"
+  },
+  "plugins": [
+    {
+      "name": "think",
+      "source": "./plugins/think",
+      "description": "Multi-perspective structured thinking mode for system design and architecture",
+      "version": "1.0.0",
+      "author": {
+        "name": "DIvkov575"
+      },
+      "repository": "https://github.com/DIvkov575/skills",
+      "keywords": ["thinking", "architecture", "system-design", "planning"]
+    }
+  ]
+}
