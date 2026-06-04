@@ -1,0 +1,5 @@
+{
+  "name": "git-ship",
+  "description": "Commit staged changes with a generated message and push to the current branch",
+  "version": "1.0.0"
+}
