@@ -1,5 +1,5 @@
 {
   "name": "handoff",
   "description": "Generate a full-briefing handoff document for the next session",
-  "version": "1.0.0"
+  "version": "1.0.1"
 }
