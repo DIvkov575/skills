@@ -8,7 +8,7 @@
     "description": "Custom Claude Code skills by DIvkov575"
   },
   "plugins": [
-{
+    {
       "name": "git-ship",
       "source": "./plugins/git-ship",
       "description": "Commit staged changes with a generated message and push to the current branch",
@@ -18,6 +18,28 @@
       },
       "repository": "https://github.com/DIvkov575/skills",
       "keywords": ["git", "commit", "push"]
+    },
+    {
+      "name": "converge",
+      "source": "./plugins/converge",
+      "description": "Autonomous plan, TDD implement, review, fix loop until clean",
+      "version": "1.0.0",
+      "author": {
+        "name": "DIvkov575"
+      },
+      "repository": "https://github.com/DIvkov575/skills",
+      "keywords": ["tdd", "review", "autonomous"]
+    },
+    {
+      "name": "handoff",
+      "source": "./plugins/handoff",
+      "description": "Generate a full-briefing handoff document for the next session",
+      "version": "1.0.0",
+      "author": {
+        "name": "DIvkov575"
+      },
+      "repository": "https://github.com/DIvkov575/skills",
+      "keywords": ["handoff", "session", "context"]
     }
   ]
 }
