@@ -1,0 +1,5 @@
+{
+  "name": "distill",
+  "description": "Create a dense summary of the conversation in 5-10 bullet points",
+  "version": "1.0.0"
+}
