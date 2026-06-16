@@ -63,7 +63,7 @@ Generate a comprehensive handoff document so the next Claude Code session can pi
 Run: `<exact test command that was last used>`
 ```
 
-4. **Write the file** — save to `HANDOFF.md` in the project root. Overwrite any existing content.
+4. **Write the file** — save to `.remember/remember.md` in the project root (create `.remember/` if it doesn't exist). Overwrite any existing content.
 
 5. **Print summary** — output a 3-line summary to terminal:
    - What was accomplished
