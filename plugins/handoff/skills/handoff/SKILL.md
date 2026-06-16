@@ -5,7 +5,7 @@ description: Generate a full-briefing handoff document for the next session — 
 
 # Handoff
 
-Generate a comprehensive handoff document so the next Claude Code session can pick up cold with full context.
+Generate a comprehensive handoff document so the next session can pick up cold with full context.
 
 ## Steps
 
@@ -45,7 +45,7 @@ Generate a comprehensive handoff document so the next Claude Code session can pi
 (If nothing was abandoned, write "Nothing abandoned this session.")
 
 ## Mental Model
-<3-8 sentences describing the system architecture as currently relevant to active work. Focus on non-obvious relationships, recent additions, and gotchas. Don't describe what's obvious from CLAUDE.md.>
+<3-8 sentences describing the system architecture as currently relevant to active work. Focus on non-obvious relationships, recent additions, and gotchas. Don't describe what's already documented.>
 
 ## Key Files
 - `<path>` — <one-line description of relevance>
