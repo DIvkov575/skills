@@ -51,6 +51,17 @@
       },
       "repository": "https://github.com/DIvkov575/skills",
       "keywords": ["summary", "distill", "context"]
+    },
+    {
+      "name": "improve-prompt",
+      "source": "./plugins/improve-prompt",
+      "description": "Analyze and improve a prompt using documented best practices",
+      "version": "1.0.0",
+      "author": {
+        "name": "DIvkov575"
+      },
+      "repository": "https://github.com/DIvkov575/skills",
+      "keywords": ["prompt", "improve", "rewrite", "optimize"]
     }
   ]
 }
