@@ -66,6 +66,20 @@ Take the prompt the user provides (or the most recent system prompt / skill in c
 - Remove instructions the model would follow by default (don't tell it to "be helpful" or "answer accurately").
 - Collapse multi-sentence instructions into single clear directives where possible.
 
+### Compression (final pass)
+
+After applying all checklist items above, run a compression pass on the result:
+- Strip articles (a/an/the) unless ambiguity results
+- Use symbolic shorthand: → ← ↔ = ≠ ∈ w/ w/o b/c e.g. i.e. vs
+- Use slash-lists ("JSON/YAML/TOML") over comma-separated prose
+- Collapse multi-sentence rules into semicolon-joined single lines
+- Replace examples that merely illustrate an already-stated rule with just the rule
+- Merge overlapping/duplicate rules into one
+- Omit trailing periods on bullets
+- Target: the rewrite should be ≥30% shorter than the original in token count
+
+This is NOT optional — every rewrite gets compressed. The goal is the shortest prompt that produces identical model behavior.
+
 ## Rules
 
 - Do NOT ask for confirmation before rewriting. Just do it.
@@ -74,4 +88,4 @@ Take the prompt the user provides (or the most recent system prompt / skill in c
 - If the prompt is already strong, say so and suggest only minor tweaks (or none).
 - If the prompt is a SKILL.md, preserve the frontmatter and section structure.
 - Keep the rewrite in the same language as the original.
-- The improved prompt should be shorter than or equal in length to the original unless adding examples or structure requires more space.
+- The improved prompt MUST be shorter than the original. Clarity improvements that add length must be offset by compression elsewhere. Report the reduction: `{original} → {improved} ({percent}% reduction)`.

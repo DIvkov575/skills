@@ -1,0 +1,5 @@
+{
+  "name": "compress",
+  "description": "Compress text to minimal tokens while preserving all actionable information",
+  "version": "1.0.0"
+}

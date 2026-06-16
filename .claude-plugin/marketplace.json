@@ -62,6 +62,17 @@
       },
       "repository": "https://github.com/DIvkov575/skills",
       "keywords": ["prompt", "improve", "rewrite", "optimize"]
+    },
+    {
+      "name": "compress",
+      "source": "./plugins/compress",
+      "description": "Compress text to minimal tokens while preserving all actionable information",
+      "version": "1.0.0",
+      "author": {
+        "name": "DIvkov575"
+      },
+      "repository": "https://github.com/DIvkov575/skills",
+      "keywords": ["compress", "tokens", "density", "optimize"]
     }
   ]
 }
