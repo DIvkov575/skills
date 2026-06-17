@@ -1,0 +1,5 @@
+{
+  "name": "namegen",
+  "description": "Generate ~100 company name candidates for a concept via 6 parallel creative lenses",
+  "version": "1.0.0"
+}
