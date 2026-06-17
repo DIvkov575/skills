@@ -73,6 +73,17 @@
       },
       "repository": "https://github.com/DIvkov575/skills",
       "keywords": ["compress", "tokens", "density", "optimize"]
+    },
+    {
+      "name": "namegen",
+      "source": "./plugins/namegen",
+      "description": "Generate ~100 company name candidates for a concept via 6 parallel creative lenses",
+      "version": "1.0.0",
+      "author": {
+        "name": "DIvkov575"
+      },
+      "repository": "https://github.com/DIvkov575/skills",
+      "keywords": ["naming", "brainstorm", "company", "brand", "generator"]
     }
   ]
 }
