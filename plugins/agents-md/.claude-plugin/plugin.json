@@ -1,0 +1,5 @@
+{
+  "name": "agents-md",
+  "description": "Auto-discover AGENTS.md files (walking up from cwd) and inject them as session instructions",
+  "version": "1.0.0"
+}

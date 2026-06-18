@@ -84,6 +84,17 @@
       },
       "repository": "https://github.com/DIvkov575/skills",
       "keywords": ["naming", "brainstorm", "company", "brand", "generator"]
+    },
+    {
+      "name": "agents-md",
+      "source": "./plugins/agents-md",
+      "description": "Auto-discover AGENTS.md files and inject them as session instructions (like CLAUDE.md)",
+      "version": "1.0.0",
+      "author": {
+        "name": "DIvkov575"
+      },
+      "repository": "https://github.com/DIvkov575/skills",
+      "keywords": ["agents", "instructions", "discovery", "hooks"]
     }
   ]
 }
