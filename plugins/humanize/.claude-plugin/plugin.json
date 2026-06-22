@@ -1,0 +1,5 @@
+{
+  "name": "humanize",
+  "description": "Rewrite AI-generated text to sound like a real human wrote it by eliminating GPTisms",
+  "version": "1.0.0"
+}

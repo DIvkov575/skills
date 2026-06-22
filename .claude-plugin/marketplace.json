@@ -95,6 +95,17 @@
       },
       "repository": "https://github.com/DIvkov575/skills",
       "keywords": ["agents", "instructions", "discovery", "hooks"]
+    },
+    {
+      "name": "humanize",
+      "source": "./plugins/humanize",
+      "description": "Rewrite AI-generated text to sound human by eliminating GPTisms — overused words, filler phrases, and structural tells",
+      "version": "1.0.0",
+      "author": {
+        "name": "DIvkov575"
+      },
+      "repository": "https://github.com/DIvkov575/skills",
+      "keywords": ["humanize", "gptisms", "rewrite", "voice", "tone", "writing"]
     }
   ]
 }
