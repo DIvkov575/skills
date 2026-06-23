@@ -93,7 +93,7 @@
       "author": {
         "name": "DIvkov575"
       },
-      "repository": "https://github.com/DIvkov575/skills",
+      "repository": "https://github.com/DIvkov575/dima-skills",
       "keywords": ["agents", "instructions", "discovery", "hooks"]
     },
     {
@@ -104,8 +104,19 @@
       "author": {
         "name": "DIvkov575"
       },
-      "repository": "https://github.com/DIvkov575/skills",
+      "repository": "https://github.com/DIvkov575/dima-skills",
       "keywords": ["humanize", "gptisms", "rewrite", "voice", "tone", "writing"]
+    },
+    {
+      "name": "status",
+      "source": "./plugins/status",
+      "description": "Read session notes, today's work log, and task list to produce a concise status report",
+      "version": "1.0.0",
+      "author": {
+        "name": "DIvkov575"
+      },
+      "repository": "https://github.com/DIvkov575/dima-skills",
+      "keywords": ["status", "progress", "todo", "notes", "report"]
     }
   ]
 }
