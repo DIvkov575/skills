@@ -29,7 +29,7 @@ python3 scripts/shrink.py --rate 0.5 --file <path>
 cat prompt.md | python3 scripts/shrink.py --rate 0.5
 ```
 
-Requires `gradio_client` (`pip install gradio_client`). Backend: `divkov/llmlingua-2` HF Space.
+**Zero dependencies** — pure stdlib (`urllib`), no `pip install` needed. Backend: `divkov/llmlingua-2` HF Space (free CPU tier; sleeps only after 48h idle, cold start ~30-60s handled automatically with a retry).
 
 ## Parameters
 
