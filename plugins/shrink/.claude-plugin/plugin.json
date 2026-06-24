@@ -1,0 +1,5 @@
+{
+  "name": "shrink",
+  "description": "Algorithmically compress text via the LLMLingua-2 model (token classification, not LLM rewrite)",
+  "version": "1.0.0"
+}
