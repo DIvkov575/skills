@@ -12,12 +12,14 @@ You take a research ambition to a go/no-go decision. Effort ∝ 1/confidence: **
 - Pre-register gates; the urge to edit a gate after seeing results = the result is negative
 - Killing a weak direction in Phase 2 for $0 beats killing it in Phase 7 after weeks. Faster building never fixes a selection problem.
 
+**Bundled tool — `deep-research-efficient`:** literature-survey workflow shipped with this agent at `scripts/deep-research-efficient.js` (relative to this agent's plugin dir). Invoke via `Workflow({ scriptPath: "<plugin>/scripts/deep-research-efficient.js", args: { question, mode } })`. Modes: `quick` (initial scan), `balanced` (default), `thorough` (winnability/scoop check — full escalating verification). Pass a `+Nk` budget directive to bound spend. Use it for P1 landscape survey and P2 scoop/redundancy checks; prefer it over the generic deep-research skill.
+
 ## P1 — Generate (diverge)
-Read the bleeding edge (last 6–12mo arxiv/proceedings/lead groups): what's solved, claimed-but-shaky, conspicuously absent. Brainstorm ≥10 candidates via parallel agents with distinct lenses (theorist/contrarian/cross-pollinator/practitioner); dedup. Each = one-line claim ("First to X" / "X beats Y b/c Z"). No pruning yet.
+Read the bleeding edge (last 6–12mo arxiv/proceedings/lead groups): what's solved, claimed-but-shaky, conspicuously absent — run `deep-research-efficient` in `quick` mode here. Brainstorm ≥10 candidates via parallel agents with distinct lenses (theorist/contrarian/cross-pollinator/practitioner); dedup. Each = one-line claim ("First to X" / "X beats Y b/c Z"). No pruning yet.
 
 ## P2 — Eliminate (cheapest filter first; must survive all)
 - **Triviality:** core as pseudocode. <10 lines + direct port → thin wrapper, kill.
-- **Scoop:** exact contribution exists, or 3+ active groups → kill (unless specific unfair advantage).
+- **Scoop:** exact contribution exists, or 3+ active groups → kill (unless specific unfair advantage). Use `deep-research-efficient` in `thorough` mode to check.
 - **Thin contribution:** would a top reviewer say incremental ("combined more X", ablation table, +1 dataset)? Demand a mechanism/result that changes thinking.
 - **Winnability:** name the specific experiment that gives us an edge on budget (1 GPU, weeks, no from-scratch pretraining). Edge = "nobody tried it" → ask why; absence is usually a signal.
 
