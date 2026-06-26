@@ -22,15 +22,16 @@ YOUR VERY NEXT ACTION MUST BE STEP 1 AND THEN STEP 2. Do not summarize this skil
 
 Autonomous session-level orchestrator: plan, implement via TDD subagents, then loop review→fix until clean. No human-in-the-loop between phases.
 
-**Core principle:** Front-load adversarial thinking into the plan, implement with TDD discipline, then run each review→fix iteration in a **fresh-context subagent** so review quality never degrades from accumulated orchestrator context. The orchestrator holds only the task summary, the diff range, and a compact per-round verdict — it dispatches and decides; it never reviews or fixes inline.
+**Core principle:** Front-load adversarial thinking into the plan, implement with TDD discipline, then run each review→fix iteration in a **fresh-context subagent**. Within an iteration, review→feedback→plan→fix is one continuous context (the fix sees the full review reasoning). Across iterations, there is zero context carryover — only the committed code persists, and each new round re-reviews it from scratch. The orchestrator holds only the task summary, the diff range, and a compact per-round verdict; it dispatches and decides, never reviewing or fixing inline.
 
 ## The Loop (Quick Reference)
 
 ```
 Phase 1: PLAN → Skill(superpowers:writing-plans)
 Phase 2: IMPLEMENT → Skill(superpowers:subagent-driven-development)
-Phase 3: CONVERGE LOOP → per round, ONE fresh subagent does review+fix+verify;
-         orchestrator reads compact verdict, decides loop/exit. Max 3 rounds.
+Phase 3: CONVERGE LOOP → per round, ONE fresh subagent does review→feedback→
+         plan→fix→verify in one continuous context; zero carryover between
+         rounds. Orchestrator reads compact verdict, decides loop/exit. Max 3.
 EXIT → report what was built, leave committed but NOT pushed
 ```
 
@@ -54,26 +55,30 @@ When implementation completes, record the **diff range** (e.g. `<base-sha>..HEAD
 
 ## Phase 3: CONVERGE LOOP (fresh subagent per round, max 3 rounds)
 
-Each round is ONE subagent launched with the Agent tool (fresh context, no inheritance of orchestrator history). The orchestrator passes only:
+Each round is ONE subagent launched with the Agent tool. **Within a round the steps are context-continuous** — review → feedback → plan → fix all happen in the same subagent context, so the fix is informed by the full review reasoning. **Across rounds there is zero carryover** — the next round is a brand-new context that knows nothing of the prior round. The only state that persists between rounds is the committed code itself; a fresh reviewer rediscovers anything still broken by re-reviewing the current diff.
+
+The orchestrator passes to each round ONLY:
 - The diff range to review (`<base>..HEAD`)
 - The one-line task summary
 - The adversarial enrichment notes
-- The prior round's unresolved findings (round 1: none)
 
-**The subagent's instructions (put this in the Agent prompt):**
-1. Run `Skill(code-review)` with `--effort max` on the given diff range.
-2. Triage findings: CONFIRMED/HIGH vs PLAUSIBLE/LOW.
-3. Fix every CONFIRMED/HIGH finding directly in the working tree.
-4. Verify: run the test suite; confirm fixes apply cleanly and introduce no regressions.
-5. Commit the fixes.
-6. Return ONLY a compact verdict (no narration, no diffs): `{round_status, fixed: [...], remaining: [{severity, file, one-line}], tests: pass/fail}`.
+It does NOT pass prior findings, prior fixes, or any round history. (If a real bug survives a round, the next fresh review re-finds it from the code; passing findings forward would both leak context and bias the new review.)
+
+**The subagent's instructions (one continuous context — put this in the Agent prompt):**
+1. **Review** — run `Skill(code-review)` with `--effort max` on the given diff range.
+2. **Feedback** — triage findings: CONFIRMED/HIGH vs PLAUSIBLE/LOW.
+3. **Plan** — decide the fix for each CONFIRMED/HIGH finding (reasoning stays in this context).
+4. **Solution** — apply the fixes directly in the working tree.
+5. **Verify** — run the test suite; confirm fixes apply cleanly and introduce no regressions.
+6. **Commit** the fixes.
+7. Return ONLY a compact verdict (no narration, no diffs, no carry-forward notes): `{remaining: [{severity, file, one-line}], tests: pass/fail}`.
 
 **Orchestrator decision (reads only the returned verdict):**
 - `remaining` empty → EXIT
 - Round 3 reached and only PLAUSIBLE/LOW remain → EXIT (report as caveats)
-- CONFIRMED/HIGH remain and round < 3 → launch next round's fresh subagent, passing `remaining` forward
+- CONFIRMED/HIGH remain and round < 3 → launch next round's fresh subagent (diff range only; no findings)
 
-The orchestrator MUST NOT read the full diff or findings itself — that defeats the fresh-context purpose. It acts only on the compact verdict.
+The orchestrator MUST NOT read the full diff or findings itself, and MUST NOT forward findings between rounds — both defeat the fresh-context purpose. It acts only on the compact verdict to decide loop-or-exit.
 
 ## EXIT
 
@@ -114,6 +119,7 @@ Before dispatching implementation, scan each task and append:
 | 3 rounds, still CONFIRMED | EXIT with report. Don't loop forever. |
 | Subagent blocked/fails | Re-dispatch with escalated model tier or more context |
 | Orchestrator context bloats across rounds | Fresh subagent per round + compact-verdict-only return keeps orchestrator lean |
+| Context leaks across rounds (biases re-review) | Pass diff range only — never prior findings/fixes; each round rediscovers from code |
 
 ## Reference: What This Does NOT Do
 
