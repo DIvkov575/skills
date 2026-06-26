@@ -1,6 +1,6 @@
 ---
 name: research
-description: End-to-end procedure for finding a novel, winnable ML research direction — scan the bleeding edge, creatively find shortfalls, generate directions (Phase 1), evaluate and pare down (Phase 2), then for each survivor build cheap MVP gates, verify the metric, run, and escalate to a real MVP/design gate before committing. Use when starting research, picking a direction, or deciding whether to abandon one.
+description: End-to-end procedure for finding a novel, winnable ML research direction — scan the bleeding edge, creatively find shortfalls, generate a WIDE set of directions and record them all to a persistent ledger (Phase 1), evaluate and pare down (Phase 2), then for each survivor build cheap MVP gates, verify the metric, run, and escalate to a real MVP/design gate before committing. On failure, pull the next idea from the ledger instead of regenerating. Use when starting research, picking a direction, or deciding whether to abandon one.
 ---
 
 # Research
@@ -30,9 +30,22 @@ Workflow({ scriptPath: "<deep-research-efficient>/scripts/deep-research-efficien
 - **Existing skills/repo**: prior `PROJECT_RESEARCH.md`, design specs, abandoned branches — reusable assets and known-bad paths.
 - Ask: where is the bleeding edge *brittle*? What does everyone assume that might be wrong? What's provable-but-unproven? What breaks at scale that no method addresses?
 
-**1c. Fan out ideation.** In ONE message dispatch parallel `Agent` calls, each blind to the others, each given the 1a landscape + 1b shortfalls, from a distinct lens — Theorist (gaps in bounds/guarantees), Contrarian (invert a load-bearing assumption), Cross-pollinator (port a technique from an adjacent field), Practitioner (deployment/scale failure modes). Each returns 4–6 one-line directions: `"<First-to-X / X-beats-Y-because-Z>" — 2-sentence why-novel-and-winnable`.
+**1c. Fan out ideation — wide.** In ONE message dispatch parallel `Agent` calls, each blind to the others, each given the 1a landscape + 1b shortfalls. Use ≥6 distinct lenses for a wide span — Theorist (gaps in bounds/guarantees), Contrarian (invert a load-bearing assumption), Cross-pollinator (port a technique from an adjacent field), Practitioner (deployment/scale failure modes), Historian (revive an abandoned idea that newer tools now make feasible), Adjacent-domain (what would a physicist / linguist / systems person try here). Each returns 6–10 one-line directions: `"<First-to-X / X-beats-Y-because-Z>" — 2-sentence why-novel-and-winnable`. Bias for breadth and weirdness; cost of a bad candidate is ~zero because the gate kills cheaply.
 
-**1d. Dedup → master list.** Merge near-duplicates (keep sharpest phrasing). Target ≥10 candidates. **No pruning, no ranking by quality** — speculative is welcome; the gate kills cheaply later. (namegen/brainstorming skills can supplement if more volume is wanted.)
+**1d. Dedup → record the FULL peak set to the ledger.** Merge near-duplicates (keep sharpest phrasing). Target ≥20 candidates after dedup. **No pruning, no ranking by quality.** Then **write every candidate to the persistent ledger** (see below) — this is the peak, captured before any Phase-2 attrition, so a failed attempt later returns to the shelf instead of regenerating from scratch.
+
+### The Candidate Ledger (persistent across attempts)
+Maintain `docs/RESEARCH_LEDGER.md` (create if absent). It is the durable backlog of every idea ever generated, with its status. Each entry:
+```
+- [ID] <one-line contribution claim>  ·  status: pool | picked | killed:<stage> | shipped
+       lens: <which lens(es) produced it>  ·  added: <date>
+       prior-art/delta: <if known>  ·  killed-because: <reason, when killed>
+```
+Rules:
+- Phase 1 appends ALL new candidates as `pool` (dedup against existing IDs — don't re-add a known-killed idea unless something material changed; note what changed).
+- Phase 2 updates status in place: `picked`, `killed:<2a-triviality|2a-scoop|2a-thin|2a-winnability|2b-mvp|2c-design>`, or `shipped`. Always fill `killed-because`.
+- **When an attempt fails, do NOT regenerate from scratch — first read the ledger and pull the next-best `pool` candidate.** Only return to Phase 1 if the pool is exhausted or stale.
+- Killed entries stay (don't delete) — they record dead ends so they aren't re-tried, and a newer tool/insight can resurrect one (move back to `pool` with a note).
 
 ---
 
@@ -55,7 +68,7 @@ For each (in priority order; one at a time):
 - **Verify the metric BEFORE running** (non-negotiable): random model → chance; two identical models (same seed/data) → exact tie; metric measures what training optimizes, not a proxy rewarding trivial behavior; masks/seeds/grid fixed across conditions. Any failure → metric broken, fix first.
 - Run, compare to frozen gate:
   - **Clean positive** (+ audit) → 2c
-  - **Clean negative** → one-line negative result; next survivor (or back to Phase 1)
+  - **Clean negative** → record `killed:2b-mvp` + reason in the ledger; pull the next survivor, then the next-best `pool` candidate from the ledger; only return to Phase 1 if the pool is exhausted
   - **Ambiguous** → one cheap larger-scale iteration; still ambiguous → treat as negative
   - **>10–15% gain** → mandatory adversarial audit (re-derive metric, check leakage, confirm baselines) before believing
 
@@ -64,7 +77,7 @@ For each (in priority order; one at a time):
 - **Pre-register the design gate**: a right-sized (~20–30 min) experiment beating baselines, with its own metric + threshold + architecture. Verify metric AND architecture with the 2b checks (new scale/baselines reintroduce metric bugs).
 - Run it (~20–30 min config ≈ same verdict a 10× run gives).
 - **Beats baselines + clean audit → DOUBLE DOWN**: building is justified — hand to `writing-plans` → implementation → `code-review` (extra scrutiny on the eval path) → full experiments + ablations.
-- **Fails or marginal → PIVOT**: never edit the gate to pass. Next candidate, or back to Phase 1. Report honestly.
+- **Fails or marginal → PIVOT**: never edit the gate to pass. Record `killed:2c-design` + reason; pull the next-best `pool` candidate from the ledger; only return to Phase 1 if the pool is exhausted. Report honestly.
 
 ---
 
@@ -73,3 +86,4 @@ For each (in priority order; one at a time):
 - Pre-registered gates are immutable.
 - Surface negatives plainly and promptly; don't soften a kill to keep a project alive.
 - Default to the cheaper test, not the bigger build.
+- The ledger is the source of truth for what's been tried. Read it before generating; update it on every status change. A failed attempt returns to the shelf, not to a blank page.

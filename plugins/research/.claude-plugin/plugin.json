@@ -1,5 +1,5 @@
 {
   "name": "research",
-  "description": "End-to-end ML research direction selection: scan bleeding edge, find shortfalls, generate directions, then narrow via cheap MVP gates and metric-first kill gates",
+  "description": "End-to-end ML research direction selection: wide idea generation recorded to a persistent ledger, then narrow via cheap MVP gates and metric-first kill gates; failed attempts pull the next idea off the shelf",
   "version": "1.0.0"
 }
