@@ -1,6 +1,6 @@
 ---
 name: research-gate
-description: Use when converging a list of candidate ML research directions to a go/no-go â€” the convergent half of research selection. Escalating filters cheapest-first, from literature checks through actually-run MVP falsifiers and metric-first kill gates, with explicit pivot/double-down. Pair with research-fanout for generation.
+description: Use when converging candidate ML research directions to a go/no-go decision. Escalating filters cheapest-first, from literature checks through actually-run MVP falsifiers and metric-first kill gates, with explicit pivot/double-down. Feed it candidates from any source (namegen, brainstorming, or your own list).
 ---
 
 # Research Gate
@@ -9,7 +9,7 @@ Convergent triage. Convergence is **empirical, not just literature filtering** â
 
 ## Input
 
-`$ARGUMENTS` = a candidate list (e.g. from `research-fanout`), or a single direction to vet. If empty, ask for candidates.
+`$ARGUMENTS` = a candidate list (from namegen, brainstorming, or hand-written), or a single direction to vet. If empty, ask for candidates.
 
 ## Hard reflexes (the gate exists because these were violated before)
 
