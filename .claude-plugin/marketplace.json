@@ -130,6 +130,17 @@
       "keywords": ["compress", "shrink", "llmlingua", "tokens", "context"]
     },
     {
+      "name": "atomize",
+      "source": "./plugins/atomize",
+      "description": "Decompose unstructured text into atomic, decontextualized, deduped, source-verified semantic units",
+      "version": "1.0.0",
+      "author": {
+        "name": "DIvkov575"
+      },
+      "repository": "https://github.com/DIvkov575/dima-skills",
+      "keywords": ["atomic", "decompose", "claim", "proposition", "decontextualize", "facts", "memory"]
+    },
+    {
       "name": "deep-research-efficient",
       "source": "./plugins/deep-research-efficient",
       "description": "Budget-bounded, model-tiered deep-research workflow with two-stage escalating verification",

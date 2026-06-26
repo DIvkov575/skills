@@ -1,0 +1,5 @@
+{
+  "name": "atomize",
+  "description": "Decompose unstructured text into atomic, decontextualized, deduped, source-verified semantic units",
+  "version": "1.0.0"
+}
