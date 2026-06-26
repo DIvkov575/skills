@@ -128,6 +128,17 @@
       },
       "repository": "https://github.com/DIvkov575/dima-skills",
       "keywords": ["compress", "shrink", "llmlingua", "tokens", "context"]
+    },
+    {
+      "name": "research-director",
+      "source": "./plugins/research-director",
+      "description": "Orchestrate a novel ML research direction end-to-end with metric-first discipline and pre-registered kill gates",
+      "version": "1.0.0",
+      "author": {
+        "name": "DIvkov575"
+      },
+      "repository": "https://github.com/DIvkov575/dima-skills",
+      "keywords": ["research", "agent", "ml", "experiment", "kill-gate", "methodology"]
     }
   ]
 }

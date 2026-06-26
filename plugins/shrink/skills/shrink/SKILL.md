@@ -24,16 +24,16 @@ Use `compress` for anything a human reads. Use `shrink` for bulk context where o
 The skill ships a script. Run it on the target text:
 
 ```bash
-python3 scripts/shrink.py --rate 0.5 --file <path>
+python3 scripts/shrink.py --rate 0.3 --file <path>
 # or pipe:
-cat prompt.md | python3 scripts/shrink.py --rate 0.5
+cat prompt.md | python3 scripts/shrink.py --rate 0.3
 ```
 
 **Zero dependencies** — pure stdlib (`urllib`), no `pip install` needed. Backend: `divkov/llmlingua-2` HF Space (free CPU tier; sleeps only after 48h idle, cold start ~30-60s handled automatically with a retry).
 
 ## Parameters
 
-- `--rate` (0.1–0.9): fraction of tokens to KEEP. `0.5` = ~2x compression. Lower = more aggressive. Default `0.5`
+- `--rate` (0.1–0.9): fraction of tokens to KEEP. `0.3` = ~3.3x compression. Lower = more aggressive. Default `0.3`
 - `--force "a,b,c"`: comma-separated tokens to NEVER drop — **always pass exact numbers, IDs, paths, API names, version strings here**, since the classifier drops digits as low-information
 - `--file <path>`: read input from file (else stdin)
 
@@ -43,7 +43,7 @@ Compressed text → stdout. Stats (`orig → compressed tokens | ratio | % saved
 
 1. Identify the text (file or pasted). Confirm it's machine-bound, not human-facing — if human-facing, use `compress` instead.
 2. Scan for exact values that must survive (numbers, identifiers, paths); collect them for `--force`.
-3. Run the script with an appropriate `--rate` (start `0.5`; raise to `0.6–0.7` if precision matters).
+3. Run the script with an appropriate `--rate` (start `0.3`; raise to `0.6–0.7` if precision matters).
 4. Report the compressed output and the stats line.
 
 ## Common Mistakes

@@ -56,8 +56,8 @@ def shrink(text: str, rate: float, force: str, wake_wait: int = 90) -> tuple[str
 
 def main():
     ap = argparse.ArgumentParser(description="Compress text via LLMLingua-2 (zero-dep)")
-    ap.add_argument("--rate", type=float, default=0.5,
-                    help="Retention rate 0.1-0.9 (0.5 = keep 50%% of tokens)")
+    ap.add_argument("--rate", type=float, default=0.3,
+                    help="Retention rate 0.1-0.9 (0.3 = keep 30%% of tokens)")
     ap.add_argument("--force", default="",
                     help="Comma-separated tokens to never drop (numbers, IDs, paths)")
     ap.add_argument("--file", default=None, help="Read input from file instead of stdin")
