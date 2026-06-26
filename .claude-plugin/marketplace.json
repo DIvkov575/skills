@@ -161,6 +161,17 @@
       },
       "repository": "https://github.com/DIvkov575/dima-skills",
       "keywords": ["research", "ideation", "kill-gate", "mvp", "experiment", "ml"]
+    },
+    {
+      "name": "hld",
+      "source": "./plugins/hld",
+      "description": "Produce a High-Level Design doc through grounded inquiry, then echo the full HLD back to the user",
+      "version": "1.0.0",
+      "author": {
+        "name": "DIvkov575"
+      },
+      "repository": "https://github.com/DIvkov575/dima-skills",
+      "keywords": ["hld", "design", "architecture", "spec", "planning"]
     }
   ]
 }

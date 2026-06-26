@@ -1,0 +1,5 @@
+{
+  "name": "hld",
+  "description": "Produce a High-Level Design doc through grounded inquiry, then echo the full HLD back to the user",
+  "version": "1.0.0"
+}
