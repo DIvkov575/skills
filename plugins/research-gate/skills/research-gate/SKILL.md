@@ -43,7 +43,7 @@ For the picked candidate:
 
 Then run and compare to the frozen gate:
 - **Clean positive** (beats gate + audit passes) → Stage C
-- **Clean negative** → pivot: one-line negative result, return to the next Stage-A survivor or to `research-fanout`
+- **Clean negative** → pivot: one-line negative result, return to the next Stage-A survivor, or generate fresh candidates (namegen/brainstorming)
 - **Ambiguous** → one cheap iteration at slightly larger scale; still ambiguous → treat as negative (weak small-scale signals rarely strengthen)
 - **>10–15% gain** → mandatory adversarial audit (re-derive metric, check leakage, confirm baselines real) before believing it
 
@@ -54,7 +54,7 @@ Only after a clean, audited MVP positive:
 - Pre-register the **design gate**: a ~20–30 min experiment beating baselines, with its own metric + threshold + architecture. Verify metric AND architecture with the Stage-B checks (new scale/baselines reintroduce metric bugs).
 - Run it (~20–30 min config ≈ same verdict a 10× run would give).
 - **Beats baselines + clean audit → DOUBLE DOWN:** building is now justified (hand to writing-plans → implementation → code-review with extra scrutiny on the eval path → full experiments + ablations).
-- **Fails or marginal → PIVOT:** never edit the gate to pass. Return to method brainstorm or to `research-fanout`. Report honestly.
+- **Fails or marginal → PIVOT:** never edit the gate to pass. Return to method brainstorm or generate fresh candidates. Report honestly.
 
 ## Rules
 
