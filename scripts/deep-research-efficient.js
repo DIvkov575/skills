@@ -20,28 +20,35 @@ if (!QUESTION) {
   return { error: "No question. Pass a string, or {question, mode}. Modes: quick|balanced|thorough." }
 }
 const MODE = A.mode || "balanced"
+// votes = TOTAL votes a surviving claim receives (escalation target).
+// Verification is two-stage: a cheap 1-vote screen on ALL claims, then
+// screen-survivors escalate to `votes` total for a real majority. You pay the
+// extra votes only on claims that would enter the report, not the many killed
+// cheaply. This keeps single-skeptic *kills* (cheap, safe due to default-refuted
+// bias) while preventing a lone skeptic from *passing* a bad claim into output.
 const PRESET = {
-  quick:    { angles: 3, fetch: 8,  claims: 8,  votes: 1 },
-  balanced: { angles: 5, fetch: 12, claims: 15, votes: 1 },
-  thorough: { angles: 6, fetch: 15, claims: 25, votes: 3 },
-}[MODE] || { angles: 5, fetch: 12, claims: 15, votes: 1 }
+  quick:    { angles: 3, fetch: 8,  claims: 8,  votes: 3 },
+  balanced: { angles: 5, fetch: 12, claims: 15, votes: 3 },
+  thorough: { angles: 6, fetch: 15, claims: 25, votes: 5 },
+}[MODE] || { angles: 5, fetch: 12, claims: 15, votes: 3 }
 
 // explicit args override the preset
 const N_ANGLES = A.angles ?? PRESET.angles
 const MAX_FETCH = A.fetch ?? PRESET.fetch
 let MAX_VERIFY_CLAIMS = A.claims ?? PRESET.claims
-const VOTES_PER_CLAIM = A.votes ?? PRESET.votes
+const VOTES_PER_CLAIM = A.votes ?? PRESET.votes        // total votes for an escalated claim
 const REFUTATIONS_REQUIRED = Math.max(1, Math.ceil(VOTES_PER_CLAIM / 2))
 
 const FAST = { model: "haiku", effort: "low" }   // mechanical stages
 // verify/synth inherit the session (capable) model — judgment stages
 
 // ─── Budget gate: if "+Nk" set a target, cap verification spend to fit ───
-// Reserve ~60% of remaining budget for verification (the dominant term); each
-// claim-vote ≈ ~6k output tokens empirically. Scale claims down if needed.
+// Escalation cost ≈ screen (1 vote/claim) + escalation ((votes-1) on ~half that
+// survive the screen) ≈ claims * (1 + (votes-1)/2) votes. ~6k output tokens/vote.
 if (budget.total) {
   const perVote = 6000
-  const affordable = Math.floor((budget.remaining() * 0.6) / (perVote * VOTES_PER_CLAIM))
+  const avgVotesPerClaim = 1 + (VOTES_PER_CLAIM - 1) / 2
+  const affordable = Math.floor((budget.remaining() * 0.6) / (perVote * avgVotesPerClaim))
   if (affordable < MAX_VERIFY_CLAIMS) {
     log("Budget gate: capping verify claims " + MAX_VERIFY_CLAIMS + " → " + Math.max(3, affordable))
     MAX_VERIFY_CLAIMS = Math.max(3, affordable)
@@ -120,8 +127,8 @@ const FETCH_PROMPT = (source, angle) =>
   "1. WebFetch the page. 2. Rate source quality. 3. Extract 2-5 FALSIFIABLE claims bearing on the question, each w/ a direct quote and central/supporting/tangential rating. " +
   "If fetch fails/paywalled/irrelevant: claims: [], sourceQuality: \"unreliable\". Structured output only."
 
-const VERIFY_PROMPT = (claim, v) =>
-  "## Adversarial Verifier (voter " + (v + 1) + "/" + VOTES_PER_CLAIM + ")\nBe SKEPTICAL; try to REFUTE.\n\nQuestion: " + QUESTION + "\nClaim: \"" + claim.claim + "\"\nSource: " + claim.sourceUrl + " (" + claim.sourceQuality + ")\nQuote: \"" + claim.quote + "\"\n\n" +
+const VERIFY_PROMPT = (claim, v, total) =>
+  "## Adversarial Verifier (voter " + (v + 1) + "/" + total + ")\nBe SKEPTICAL; try to REFUTE.\n\nQuestion: " + QUESTION + "\nClaim: \"" + claim.claim + "\"\nSource: " + claim.sourceUrl + " (" + claim.sourceQuality + ")\nQuote: \"" + claim.quote + "\"\n\n" +
   "Check: quote actually supports claim? contradicting evidence (WebSearch)? source quality matches claim strength? outdated? marketing/cherry-picked? " +
   "refuted=true if unsupported/contradicted/weak-source/outdated/fluff. refuted=false ONLY if well-supported, current, adequately sourced. Default refuted=true if uncertain. Structured output only; evidence must be specific."
 
@@ -160,23 +167,49 @@ if (rankedClaims.length === 0) {
   return { question: QUESTION, summary: "No claims extracted from " + allSources.length + " sources.", findings: [], refuted: [], sources: allSources.map(s => ({ url: s.url, quality: s.sourceQuality })), stats: { mode: MODE, angles: scope.angles.length, sources: allSources.length, claims: 0 } }
 }
 
-// ─── Verify (capable model) ───
+// ─── Verify: two-stage escalation (capable model) ───
+// Stage 1 screen: 1 skeptic per claim. A refute kills it cheaply (safe — the
+// prompt's default-refuted bias makes a lone kill conservative). A pass only
+// makes the claim a *candidate*. Stage 2: screen-passers escalate to
+// VOTES_PER_CLAIM total votes, so no single skeptic can pass a claim into the
+// report. Cost ≈ claims*1 (screen) + survivors*(votes-1) (escalation), vs the
+// old claims*votes flat — far cheaper since most claims die at the screen.
 phase("Verify")
-const voted = (await parallel(rankedClaims.map(claim => () =>
-  parallel(Array.from({ length: VOTES_PER_CLAIM }, (_, v) => () =>
-    agent(VERIFY_PROMPT(claim, v), { label: "v" + v + ":" + claim.claim.slice(0, 40), phase: "Verify", schema: VERDICT_SCHEMA })
-  )).then(verdicts => {
-    const valid = verdicts.filter(Boolean)
-    const refuted = valid.filter(v => v.refuted).length
-    const survives = valid.length >= REFUTATIONS_REQUIRED && refuted < REFUTATIONS_REQUIRED
-    log("\"" + claim.claim.slice(0, 50) + "…\": " + (valid.length - refuted) + "-" + refuted + " " + (survives ? "✓" : "✗"))
-    return { ...claim, verdicts: valid, refutedVotes: refuted, survives }
-  })
-)).filter(Boolean)
+
+const screened = (await parallel(rankedClaims.map(claim => () =>
+  agent(VERIFY_PROMPT(claim, 0, VOTES_PER_CLAIM), { label: "screen:" + claim.claim.slice(0, 36), phase: "Verify", schema: VERDICT_SCHEMA })
+    .then(verdict => ({ claim, screen: verdict }))
+)).then(rs => rs.filter(r => r && r.screen))   // drop null/abstained screens
+
+const screenKilled = screened.filter(r => r.screen.refuted)
+const screenPassed = screened.filter(r => !r.screen.refuted)
+log("Screen: " + screenPassed.length + "/" + screened.length + " passed (1-vote); " + screenKilled.length + " killed cheaply")
+
+// Escalate only screen-passers to a full majority (skip if votes==1)
+const escalated = (await parallel(screenPassed.map(({ claim, screen }) => () => {
+  const extra = VOTES_PER_CLAIM - 1
+  if (extra <= 0) return Promise.resolve({ claim, verdicts: [screen] })
+  return parallel(Array.from({ length: extra }, (_, i) => () =>
+    agent(VERIFY_PROMPT(claim, i + 1, VOTES_PER_CLAIM), { label: "v" + (i + 1) + ":" + claim.claim.slice(0, 36), phase: "Verify", schema: VERDICT_SCHEMA })
+  )).then(more => ({ claim, verdicts: [screen, ...more.filter(Boolean)] }))
+}))).filter(Boolean)
+
+const voted = [
+  // screen-killed claims: record as a finished 0-1 verdict (refuted)
+  ...screenKilled.map(({ claim, screen }) => ({ ...claim, verdicts: [screen], refutedVotes: 1, survives: false })),
+  // escalated claims: majority over the full vote set
+  ...escalated.map(({ claim, verdicts }) => {
+    const refuted = verdicts.filter(v => v.refuted).length
+    const survives = verdicts.length >= REFUTATIONS_REQUIRED && refuted < REFUTATIONS_REQUIRED
+    log("\"" + claim.claim.slice(0, 50) + "…\": " + (verdicts.length - refuted) + "-" + refuted + " " + (survives ? "✓" : "✗"))
+    return { ...claim, verdicts, refutedVotes: refuted, survives }
+  }),
+]
 
 const confirmed = voted.filter(c => c.survives)
 const killed = voted.filter(c => !c.survives)
-log("Verify done: " + voted.length + " → " + confirmed.length + " confirmed, " + killed.length + " killed")
+const verifyCalls = screened.length + escalated.reduce((n, e) => n + Math.max(0, e.verdicts.length - 1), 0)
+log("Verify done: " + voted.length + " → " + confirmed.length + " confirmed, " + killed.length + " killed (" + verifyCalls + " verify calls)")
 
 if (confirmed.length === 0) {
   return { question: QUESTION, summary: "All " + voted.length + " claims refuted. Inconclusive.", findings: [], refuted: killed.map(c => ({ claim: c.claim, vote: (c.verdicts.length - c.refutedVotes) + "-" + c.refutedVotes, source: c.sourceUrl })), stats: { mode: MODE, confirmed: 0, killed: killed.length } }
@@ -208,6 +241,7 @@ return {
     claimsExtracted: allClaims.length, claimsVerified: voted.length,
     confirmed: confirmed.length, killed: killed.length, afterSynthesis: report.findings.length,
     urlDupes: dupes.length, budgetDropped: budgetDropped.length,
-    agentCalls: 1 + scope.angles.length + allSources.length + (voted.length * VOTES_PER_CLAIM) + 1,
+    verifyCalls,
+    agentCalls: 1 + scope.angles.length + allSources.length + verifyCalls + 1,
   },
 }
