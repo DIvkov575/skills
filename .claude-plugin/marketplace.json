@@ -141,15 +141,15 @@
       "keywords": ["research", "workflow", "search", "verification", "budget", "tokens"]
     },
     {
-      "name": "research-gate",
-      "source": "./plugins/research-gate",
-      "description": "Convergent triage of ML research candidates — escalating filters from cheap lit checks to MVP falsifiers and metric-first kill gates",
+      "name": "research",
+      "source": "./plugins/research",
+      "description": "End-to-end ML research direction selection: scan bleeding edge, find shortfalls, generate directions, then narrow via cheap MVP gates and metric-first kill gates",
       "version": "1.0.0",
       "author": {
         "name": "DIvkov575"
       },
       "repository": "https://github.com/DIvkov575/dima-skills",
-      "keywords": ["research", "triage", "kill-gate", "convergence", "experiment", "ml"]
+      "keywords": ["research", "ideation", "kill-gate", "mvp", "experiment", "ml"]
     }
   ]
 }
