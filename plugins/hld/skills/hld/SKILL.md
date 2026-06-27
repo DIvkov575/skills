@@ -51,53 +51,102 @@ do not write an exhaustive survey of options the user didn't ask for.
 ## Step 3 — Draft the HLD
 
 Write to `docs/HLD-<topic>.md` (or a path the user/project prefers). Fill in the
-template below: include the sections that fit, drop the ones that don't, scale
-each to its complexity (a sentence to a short paragraph — this is a *high-level*
-design, not a spec). Keep it dense; cut filler. The reader wants the shape of the
-system, fast.
+template below: **include the sections that fit, drop the ones that don't, scale
+each to its complexity.** A small tool needs a Goal, Approach, Architecture, and
+Tradeoffs — nothing more. A milestone in a multi-team system earns the full
+numbered structure (FR/NFR requirements, solution options, current-state vs.
+proposal, release plan, risks, reviewers). Match the formality to the stakes:
+the heavier sections exist for designs that go to review, not for a one-page tool.
+
+Keep it dense; cut filler. This is a *high-level* design, not a spec — the reader
+wants the shape of the system and the decisions behind it, fast. Drop empty
+tables and "N/A" rows rather than padding them.
 
 ````markdown
 # HLD: <Title> (`<short-name>`)
 
-**Date:** YYYY-MM-DD · **Status:** Design
+**Date:** YYYY-MM-DD · **Author:** <alias> · **Status:** Draft | Design | Final
+<Optional for milestone/review docs:> **Milestone:** <n of m · timeline> · **Parent Doc:** <link>
 
-## Goal
-<One or two sentences: what it does and for whom.>
+> **Outcome sought from this review:** <one line — what alignment/decision this doc is asking for. Omit for non-review designs.>
 
-## Approach / why this shape
-<The core idea, and why not the obvious alternative. If the user's correction or
-a key constraint drove the shape, say so here.>
+## 1. Overview
+### 1.1 Background
+<What exists today and the context a reader needs. Name the real systems,
+services, and teams involved.>
+### 1.2 Problem Statement
+<The concrete gap or failure being solved — bullets of specifics, including any
+incidents/limits that motivate it.>
+### 1.3 Goals
+<Bulleted outcomes this design delivers.>
 
-## Verified facts (<context, e.g. "v2.1.187">)
-<The real commands / flags / file formats / versions the design rests on —
-each one observed in Step 1, not remembered. Call out anything that turned out
-NOT to exist so the design visibly accounts for it.>
-
-## Architecture
-```
-<ASCII diagram when data flow is the point: components and how they connect.>
-```
-<One or two lines naming the components and any config/inputs.>
-
-## Interface / commands
-| Command / surface | Maps to | Notes |
-|---|---|---|
-| `<cmd>` | `<real underlying call>` | <behavior> |
-
-## Error handling
-<What happens when things fail or are absent — disconnection, missing config,
-bad input. State the exit behavior / message.>
-
-## Tradeoffs
-<What this design gives up, stated plainly.>
-
-## Out of scope
+## 2. Requirements
+<For lightweight designs collapse this into a short bullet list. For review docs use IDs.>
+### 2.1 Functional `[FR1]`, `[FR2]`, …
+<What the system must do. Put decision-driving detail (formulas, triggering
+conditions, data sources) under the relevant FR.>
+### 2.2 Non-Functional `[NFR1]`, `[NFR2]`, …
+<SLAs, compatibility, isolation, observability, disable-ability.>
+### 2.3 Out of Scope
 <Explicit non-goals.>
+### 2.4 Assumptions
+<What must hold for this design to work — especially things owned by other teams.>
+### 2.5 Dependencies
+<External deliverables this blocks on. Flag any that are late or at risk.>
 
-## Open questions
-<What still needs confirming — especially anything that couldn't be tested in
-the current environment.>
+## 3. Solution Options
+<Per major decision, list options with trade-offs; mark the chosen one with ★.
+Drop this section if there was no real fork.>
+**Option A — <name>.** <trade-offs as bullets.>
+**Option B ★ — <name>.** <why it wins.>
+
+## 4. Current State
+```
+<ASCII diagram of today's architecture when relevant.>
+```
+<What breaks today / why change is needed. Cite real incidents/tickets if any.>
+
+## 5. Design Proposal
+### 5.1 Architecture
+```
+<ASCII diagram: components and how they connect / data flow.>
+```
+### 5.x <Per-component / per-concern subsections>
+<One short block each: the component, the algorithm/formula, the integration
+contract, data-model changes (note backward compatibility), canary/test changes,
+release safety. Add only the subsections this design needs.>
+
+## 6. Design Analysis
+### 6.1 Key Improvements
+<What materially gets better, as bullets.>
+### 6.2 Release Plan
+| Phase | Scope | Gate | Rollback |
+|---|---|---|---|
+### 6.3 Operational Considerations
+<Key metrics, alarms, dashboards.>
+### 6.4 Risks
+| Risk | Mitigation |
+|---|---|
+
+## 7. Appendix
+<Reference tables: onboarding steps/SLAs, existing codes, schemas. Optional.>
+
+## 8. Links
+| Description | Link |
+|---|---|
+
+## 9. Reviewers
+| # | Team / Role | Alias | Feedback |
+|---|---|---|---|
 ````
+
+### Verified-facts rule (applies throughout)
+Wherever the design rests on a real command, flag, file format, schema, version,
+or another team's deliverable, state it as observed in Step 1 — not from memory.
+Note version numbers where they matter, and call out anything that turned out
+**not** to exist so the design visibly accounts for it. For review docs this
+lives in §2.4 Assumptions / §2.5 Dependencies and inline; for a lightweight
+design, add a short **Verified facts** block after Approach.
 
 ## Step 4 — Self-review
 
