@@ -50,23 +50,54 @@ do not write an exhaustive survey of options the user didn't ask for.
 
 ## Step 3 — Draft the HLD
 
-Write to `docs/HLD-<topic>.md` (or a path the user/project prefers). Default
-sections — include what fits, scale each to its complexity (a sentence to a short
-paragraph; this is a *high-level* design, not a spec):
+Write to `docs/HLD-<topic>.md` (or a path the user/project prefers). Fill in the
+template below: include the sections that fit, drop the ones that don't, scale
+each to its complexity (a sentence to a short paragraph — this is a *high-level*
+design, not a spec). Keep it dense; cut filler. The reader wants the shape of the
+system, fast.
 
-- **Goal** — one or two sentences. What it does and for whom.
-- **Approach / why this shape** — the core idea; why not the obvious alternative.
-- **Verified facts** — the real commands/formats/versions the design rests on.
-- **Architecture** — components and how they connect (an ASCII diagram earns its
-  space when data flow is the point).
-- **Interface / commands** — the surface the user or caller touches (a table works well).
-- **Error handling** — what happens when things fail or are absent.
-- **Tradeoffs** — what this design gives up, stated plainly.
-- **Out of scope** — explicit non-goals.
-- **Open questions** — what still needs confirming, especially anything that
-  couldn't be tested in the current environment.
+````markdown
+# HLD: <Title> (`<short-name>`)
 
-Keep it dense. Cut filler. The reader wants the shape of the system, fast.
+**Date:** YYYY-MM-DD · **Status:** Design
+
+## Goal
+<One or two sentences: what it does and for whom.>
+
+## Approach / why this shape
+<The core idea, and why not the obvious alternative. If the user's correction or
+a key constraint drove the shape, say so here.>
+
+## Verified facts (<context, e.g. "v2.1.187">)
+<The real commands / flags / file formats / versions the design rests on —
+each one observed in Step 1, not remembered. Call out anything that turned out
+NOT to exist so the design visibly accounts for it.>
+
+## Architecture
+```
+<ASCII diagram when data flow is the point: components and how they connect.>
+```
+<One or two lines naming the components and any config/inputs.>
+
+## Interface / commands
+| Command / surface | Maps to | Notes |
+|---|---|---|
+| `<cmd>` | `<real underlying call>` | <behavior> |
+
+## Error handling
+<What happens when things fail or are absent — disconnection, missing config,
+bad input. State the exit behavior / message.>
+
+## Tradeoffs
+<What this design gives up, stated plainly.>
+
+## Out of scope
+<Explicit non-goals.>
+
+## Open questions
+<What still needs confirming — especially anything that couldn't be tested in
+the current environment.>
+````
 
 ## Step 4 — Self-review
 
