@@ -53,46 +53,37 @@ do not write an exhaustive survey of options the user didn't ask for.
 Write to `docs/HLD-<topic>.md` (or a path the user/project prefers). Fill in the
 template below: **include the sections that fit, drop the ones that don't, scale
 each to its complexity.** A small tool needs a Goal, Approach, Architecture, and
-Tradeoffs — nothing more. A milestone in a multi-team system earns the full
-numbered structure (FR/NFR requirements, solution options, current-state vs.
-proposal, release plan, risks, reviewers). Match the formality to the stakes:
-the heavier sections exist for designs that go to review, not for a one-page tool.
+Tradeoffs — nothing more. A larger system earns the full numbered structure.
+Match the formality to the stakes.
 
-Keep it dense; cut filler. This is a *high-level* design, not a spec — the reader
-wants the shape of the system and the decisions behind it, fast. Drop empty
-tables and "N/A" rows rather than padding them.
+**Be brief.** This is a *high-level* design, not a spec — the reader wants the
+shape of the system and the decisions behind it, fast. Favor bullets over prose;
+one tight sentence beats a paragraph. Cut filler, drop empty tables and "N/A"
+rows, and never pad a section to look complete. A good HLD is short.
 
 ````markdown
 # HLD: <Title> (`<short-name>`)
 
 **Date:** YYYY-MM-DD · **Author:** <alias> · **Status:** Draft | Design | Final
-<Optional for milestone/review docs:> **Milestone:** <n of m · timeline> · **Parent Doc:** <link>
-
-> **Outcome sought from this review:** <one line — what alignment/decision this doc is asking for. Omit for non-review designs.>
 
 ## 1. Overview
 ### 1.1 Background
-<What exists today and the context a reader needs. Name the real systems,
-services, and teams involved.>
+<What exists today and the context a reader needs, in a few lines.>
 ### 1.2 Problem Statement
-<The concrete gap or failure being solved — bullets of specifics, including any
-incidents/limits that motivate it.>
+<The concrete gap or failure being solved — bullets of specifics.>
 ### 1.3 Goals
 <Bulleted outcomes this design delivers.>
 
 ## 2. Requirements
-<For lightweight designs collapse this into a short bullet list. For review docs use IDs.>
+<For lightweight designs, a short bullet list. For larger ones, ID them.>
 ### 2.1 Functional `[FR1]`, `[FR2]`, …
-<What the system must do. Put decision-driving detail (formulas, triggering
-conditions, data sources) under the relevant FR.>
-### 2.2 Non-Functional `[NFR1]`, `[NFR2]`, …
-<SLAs, compatibility, isolation, observability, disable-ability.>
-### 2.3 Out of Scope
+<What the system must do. Put decision-driving detail — formulas, triggering
+conditions, data sources — under the relevant FR.>
+### 2.2 Out of Scope
 <Explicit non-goals.>
-### 2.4 Assumptions
-<What must hold for this design to work — especially things owned by other teams.>
-### 2.5 Dependencies
-<External deliverables this blocks on. Flag any that are late or at risk.>
+### 2.3 Assumptions & Dependencies
+<What must hold for this to work, and any external deliverable it blocks on.
+Flag anything late or at risk.>
 
 ## 3. Solution Options
 <Per major decision, list options with trade-offs; mark the chosen one with ★.
@@ -129,24 +120,16 @@ release safety. Add only the subsections this design needs.>
 |---|---|
 
 ## 7. Appendix
-<Reference tables: onboarding steps/SLAs, existing codes, schemas. Optional.>
-
-## 8. Links
-| Description | Link |
-|---|---|
-
-## 9. Reviewers
-| # | Team / Role | Alias | Feedback |
-|---|---|---|---|
+<Reference tables: schemas, codes, onboarding steps. Optional.>
 ````
 
 ### Verified-facts rule (applies throughout)
 Wherever the design rests on a real command, flag, file format, schema, version,
-or another team's deliverable, state it as observed in Step 1 — not from memory.
-Note version numbers where they matter, and call out anything that turned out
-**not** to exist so the design visibly accounts for it. For review docs this
-lives in §2.4 Assumptions / §2.5 Dependencies and inline; for a lightweight
-design, add a short **Verified facts** block after Approach.
+or external deliverable, state it as observed in Step 1 — not from memory. Note
+version numbers where they matter, and call out anything that turned out **not**
+to exist so the design visibly accounts for it. For larger docs this lives in
+§2.3 Assumptions & Dependencies and inline; for a lightweight design, add a short
+**Verified facts** block after Approach.
 
 ## Step 4 — Self-review
 
