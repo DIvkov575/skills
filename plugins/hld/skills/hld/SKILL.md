@@ -22,7 +22,7 @@ Create a TodoWrite item per step and do them in order:
 2. **Clarify the crux** — ask only the questions whose answers change the design.
 3. **Draft the HLD** — write the doc, sections scaled to complexity.
 4. **Self-review** — placeholder / consistency / scope / ambiguity scan; fix inline.
-5. **Write to disk** — save and (if in a repo) commit.
+5. **Write to disk** — save the doc (commit only if asked).
 6. **Echo the full HLD back** — reproduce the entire document inline in your reply.
 
 ## Step 1 — Ground in reality
@@ -75,15 +75,11 @@ rows, and never pad a section to look complete. A good HLD is short.
 <Bulleted outcomes this design delivers.>
 
 ## 2. Requirements
-<For lightweight designs, a short bullet list. For larger ones, ID them.>
-### 2.1 Functional `[FR1]`, `[FR2]`, …
+### 2.1 Functional
 <What the system must do. Put decision-driving detail — formulas, triggering
-conditions, data sources — under the relevant FR.>
+conditions, data sources — under the relevant requirement.>
 ### 2.2 Out of Scope
 <Explicit non-goals.>
-### 2.3 Assumptions & Dependencies
-<What must hold for this to work, and any external deliverable it blocks on.
-Flag anything late or at risk.>
 
 ## 3. Solution Options
 <Per major decision, list options with trade-offs; mark the chosen one with ★.
@@ -110,41 +106,30 @@ release safety. Add only the subsections this design needs.>
 ## 6. Design Analysis
 ### 6.1 Key Improvements
 <What materially gets better, as bullets.>
-### 6.2 Release Plan
-| Phase | Scope | Gate | Rollback |
-|---|---|---|---|
-### 6.3 Operational Considerations
-<Key metrics, alarms, dashboards.>
-### 6.4 Risks
+### 6.2 Risks
 | Risk | Mitigation |
 |---|---|
-
-## 7. Appendix
-<Reference tables: schemas, codes, onboarding steps. Optional.>
 ````
 
 ### Verified-facts rule (applies throughout)
 Wherever the design rests on a real command, flag, file format, schema, version,
 or external deliverable, state it as observed in Step 1 — not from memory. Note
 version numbers where they matter, and call out anything that turned out **not**
-to exist so the design visibly accounts for it. For larger docs this lives in
-§2.3 Assumptions & Dependencies and inline; for a lightweight design, add a short
-**Verified facts** block after Approach.
+to exist so the design visibly accounts for it. State these inline where they
+matter, or add a short **Verified facts** block after Approach.
 
 ## Step 4 — Self-review
 
 Read the draft with fresh eyes and fix inline:
-- **Placeholders:** no stray TODO/TBD/FIXME (an *intentional* open question is fine
-  if it's named in Open Questions).
-- **Consistency:** sections don't contradict each other; the diagram matches the
-  command table.
+- **Placeholders:** no stray TODO/TBD/FIXME or unfilled `<…>` template slots.
+- **Consistency:** sections don't contradict each other; diagrams match the prose.
 - **Scope:** focused enough for one design; decompose if not.
 - **Ambiguity:** if a statement reads two ways, pick one and make it explicit.
 
 ## Step 5 — Write to disk
 
-Save the file. If inside a git repo, commit it (e.g.
-`docs: HLD for <topic>`). Report the path and commit hash.
+Save the file and report the path. Do **not** commit unless the user asks; if
+they do, use a message like `docs: HLD for <topic>` and report the commit hash.
 
 ## Step 6 — Echo the full HLD back (REQUIRED)
 
