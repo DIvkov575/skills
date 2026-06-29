@@ -1,5 +1,5 @@
 {
   "name": "human-writing",
-  "description": "Rewrite text to minimize em dashes and parentheticals, two of the strongest tells of AI-generated prose",
+  "description": "Rewrite prose to minimize em dashes and strip all markdown-style formatting, two strong tells of AI-generated text (parentheses are fine)",
   "version": "1.0.0"
 }

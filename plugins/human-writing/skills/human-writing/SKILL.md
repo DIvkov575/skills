@@ -1,30 +1,29 @@
 ---
 name: human-writing
-description: Rewrite text to minimize em dashes and parentheticals. Em dashes and parenthetical asides are two of the strongest tells of AI-generated prose, and overusing them makes writing feel choppy and evasive. Use on drafts, emails, posts, docs, or any text that should read like a person wrote it cleanly.
+description: Rewrite prose to minimize em dashes and strip all markdown-style formatting, two strong tells of AI-generated text. Parentheses are fine and stay. Use on drafts, emails, posts, docs, or any text that should read like a person typed it plainly.
 ---
 
 # Human Writing
 
-Rewrite the provided text so it relies on plain sentence structure instead of em dashes and parentheticals. Most em dashes and parentheses can be removed by restructuring the sentence, and the result reads cleaner and more confident. Keep the meaning identical.
+Rewrite the provided text so it relies on plain sentence structure and plain text. Remove em dashes by restructuring sentences, and strip every piece of markdown-style formatting so the result is clean prose. Parentheses are allowed and need no change. Keep the meaning identical.
 
 ## Process
 
 1. **Identify the text.** If pasted, use it. If a file is referenced, read it. If ambiguous, ask once.
 
-2. **Find every em dash and parenthetical.** Em dashes include `—`, ` - ` used as a dash, and `--`. Parentheticals include `( )` asides and dash-bracketed asides like `text — aside — text`.
+2. **Find every em dash and every markdown mark.** Em dashes include `—`, ` - ` used as a dash, and `--`. Markdown marks include bold, italics, headers, blockquotes, list markers, horizontal rules, and emphasis backticks.
 
-3. **Restructure, do not just swap punctuation.** Replacing every em dash with a comma or every parenthesis with a comma is not the goal. The goal is sentences that never needed the interruption.
+3. **Restructure to kill em dashes, do not just swap punctuation.** Replacing every em dash with a comma is not the goal. The goal is sentences that never needed the interruption.
 
-4. **Output** the rewritten text in a fenced code block.
+4. **Strip the formatting down to plain text.** The output should be something a person could type into a plain message box.
 
-5. **Report.** One line after: how many em dashes and parentheticals you removed, and how many you kept on purpose.
+5. **Output** the rewritten text in a fenced code block.
 
-## Why these two tells matter
+6. **Report.** One line after: how many em dashes you removed, how many markdown marks you stripped, and how many em dashes you kept on purpose.
 
-- **Em dashes** let a writer staple two half-thoughts together without committing to how they relate. AI does this constantly because it generates clauses faster than it decides on structure. A reader feels the hedge even if they cannot name it.
-- **Parentheticals** signal that the writer could not decide whether a detail belonged in the sentence. Either it matters and earns a place in the main clause, or it does not and gets cut.
+## Why em dashes are a tell
 
-Strip both and the prose has to stand on actual sentence structure. That is what makes it read human.
+Em dashes let a writer staple two half-thoughts together without committing to how they relate. AI does this constantly because it generates clauses faster than it decides on structure. A reader feels the hedge even if they cannot name it. Strip them and the prose has to stand on actual sentence structure. That is what makes it read human.
 
 ## How to remove an em dash
 
@@ -33,7 +32,7 @@ Pick the rewrite that fits the relationship between the two halves:
 | Em dash use | Fix |
 |-------------|-----|
 | Joining two related independent clauses | Split into two sentences. Or use a period, a semicolon, or "and"/"but"/"so". |
-| Setting off an appositive or aside | Use commas, or fold the detail into the main clause. |
+| Setting off an appositive or aside | Use commas, fold the detail into the main clause, or put it in parentheses (those are fine now). |
 | Building to a punchline or reveal | A colon often does this job better and with less drama. |
 | Tacking on an afterthought | Cut the afterthought, or promote it to its own sentence. |
 | Showing a range or span | Use "to" or an en dash in numeric ranges (e.g. "3 to 5", "1990s"). |
@@ -47,40 +46,37 @@ Pick the rewrite that fits the relationship between the two halves:
 - Before: "We had one goal — growth."
   After: "We had one goal: growth."
 
-## How to remove a parenthetical
+## Markdown formatting to strip
 
-| Parenthetical use | Fix |
-|-------------------|-----|
-| A genuinely important detail | Promote it into the main sentence. |
-| A minor clarification | Use a comma, or cut it. |
-| A definition or example | Use "such as", "like", or a separate sentence. |
-| A citation, unit, or reference | Keep it. These are fine in parentheses. |
-| An aside the writer was unsure about | Cut it. If it mattered, it earns a clause. |
+Remove all of it so the output is plain text:
 
-### Before and after
+| Markdown | What to do |
+|----------|-----------|
+| Bold (`**x**`, `__x__`) | Remove the markers. If the emphasis mattered, carry it in word choice. |
+| Italics (`*x*`, `_x_`) | Remove the markers. Use plain words or quotes if a term needs setting off. |
+| Headers (`#`, `##`, ...) | Drop the `#` marks. Make it a plain line, or fold it into the prose. |
+| Blockquotes (`>`) | Remove the `>` and write the quote inline or as plain lines. |
+| List markers (`-`, `*`, `1.`) | If the text is meant as prose, flatten the items into sentences. If a list is genuinely the right shape, write plain lines without the markers. |
+| Horizontal rules (`---`, `***`) | Delete them. |
+| Emphasis backticks | Remove backticks used only for emphasis. Keep them only for real code, file names, or identifiers. |
 
-- Before: "The API (which we rewrote last quarter) handles auth now."
-  After: "The API we rewrote last quarter handles auth now."
-- Before: "Most users (around 80%) never change the default."
-  After: "Around 80% of users never change the default."
-- Before: "It works (most of the time)."
-  After: "It works most of the time." Or, if the caveat matters: "It works, but not always."
+Genuine fenced code blocks stay as code. The rule targets prose dressed up with formatting, not actual code.
 
-## When to keep one
+## Parentheses
 
-Do not zero them out mechanically. Keep an em dash or parenthetical when removing it genuinely hurts clarity or rhythm:
+Parentheses are allowed. Leave existing parentheticals alone, and feel free to use them when removing an em dash. They are not a tell on their own.
 
-- One deliberate em dash for emphasis in a long piece is fine. A pattern of them is the problem.
-- Parentheses around citations, units, abbreviations, and references stay. "(see Figure 2)", "(p99)", "(2024)".
-- A short aside that is funnier or clearer in parentheses, used once, is human. Used every paragraph, it is a tell.
+## When to keep an em dash
 
-Target: cut at least 80% of em dashes and parentheticals. Keep the few that earn their place.
+Do not zero them out mechanically. Keep one when removing it genuinely hurts clarity or rhythm. One deliberate em dash for emphasis in a long piece is fine. A pattern of them is the problem. Target: cut at least 80% of em dashes, and strip 100% of the markdown formatting from prose.
 
 ## Rules
 
-- Restructure sentences. Do not just substitute punctuation.
-- Preserve meaning exactly. Do not add or drop information beyond a cut aside that added nothing.
-- Do not make the text less clear to hit the target. Clarity wins over the rule.
+- Restructure sentences to remove em dashes. Do not just substitute punctuation.
+- Strip all markdown-style formatting from prose. Leave real code untouched.
+- Parentheses stay. Do not remove or rewrite them for being parentheses.
+- Preserve meaning exactly. Do not add or drop information.
+- Do not make the text less clear to hit a target. Clarity wins over the rule.
 - Do not ask for confirmation unless the source text is ambiguous. Just rewrite.
-- If the text already avoids both, say so and return it unchanged.
+- If the text already avoids em dashes and carries no markdown, say so and return it unchanged.
 - Apply this to your own writing too, not only on request, when the user has this skill active.
