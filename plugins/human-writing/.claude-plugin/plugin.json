@@ -1,0 +1,5 @@
+{
+  "name": "human-writing",
+  "description": "Rewrite text to minimize em dashes and parentheticals, two of the strongest tells of AI-generated prose",
+  "version": "1.0.0"
+}

@@ -172,6 +172,17 @@
       },
       "repository": "https://github.com/DIvkov575/dima-skills",
       "keywords": ["hld", "design", "architecture", "spec", "planning"]
+    },
+    {
+      "name": "human-writing",
+      "source": "./plugins/human-writing",
+      "description": "Rewrite text to minimize em dashes and parentheticals, two of the strongest tells of AI-generated prose",
+      "version": "1.0.0",
+      "author": {
+        "name": "DIvkov575"
+      },
+      "repository": "https://github.com/DIvkov575/dima-skills",
+      "keywords": ["writing", "em-dash", "parentheticals", "style", "rewrite", "human"]
     }
   ]
 }
