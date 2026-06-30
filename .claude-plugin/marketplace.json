@@ -183,6 +183,17 @@
       },
       "repository": "https://github.com/DIvkov575/dima-skills",
       "keywords": ["writing", "em-dash", "markdown", "plain-text", "style", "rewrite", "human"]
+    },
+    {
+      "name": "agent-legible",
+      "source": "./plugins/agent-legible",
+      "description": "Insert and maintain a canonical CLAUDE.md block instructing agents to write code the next agent can navigate, verify, and safely change",
+      "version": "1.0.0",
+      "author": {
+        "name": "DIvkov575"
+      },
+      "repository": "https://github.com/DIvkov575/dima-skills",
+      "keywords": ["claude-md", "agentic", "verification", "legibility", "codebase", "exemplar"]
     }
   ]
 }

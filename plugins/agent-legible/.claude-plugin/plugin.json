@@ -1,0 +1,5 @@
+{
+  "name": "agent-legible",
+  "description": "Insert and maintain a canonical CLAUDE.md block instructing agents to write code the next agent can navigate, verify, and safely change",
+  "version": "1.0.0"
+}
