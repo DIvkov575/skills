@@ -194,6 +194,17 @@
       },
       "repository": "https://github.com/DIvkov575/dima-skills",
       "keywords": ["claude-md", "agentic", "verification", "legibility", "codebase", "exemplar"]
+    },
+    {
+      "name": "echo",
+      "source": "./plugins/echo",
+      "description": "Read a file exactly as-is into the chat so the user can see its entire contents",
+      "version": "1.0.0",
+      "author": {
+        "name": "DIvkov575"
+      },
+      "repository": "https://github.com/DIvkov575/dima-skills",
+      "keywords": ["echo", "cat", "print", "verbatim", "file", "dump"]
     }
   ]
 }

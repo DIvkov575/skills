@@ -1,0 +1,5 @@
+{
+  "name": "echo",
+  "description": "Read a file verbatim into the chat so its entire contents are visible",
+  "version": "1.0.0"
+}
